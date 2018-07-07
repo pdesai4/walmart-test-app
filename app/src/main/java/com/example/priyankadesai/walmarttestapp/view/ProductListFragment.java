@@ -1,5 +1,7 @@
 package com.example.priyankadesai.walmarttestapp.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.priyankadesai.walmarttestapp.R;
-import com.example.priyankadesai.walmarttestapp.model.Product;
+import com.example.priyankadesai.walmarttestapp.model.ProductList;
+import com.example.priyankadesai.walmarttestapp.viewmodel.ProductListViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductListFragment extends Fragment {
@@ -45,14 +47,15 @@ public class ProductListFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.product_list_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<Product> productList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Product product = new Product();
-            product.setName("Test " + i);
-            productList.add(product);
-        }
-
-        ProductListAdapter listAdapter = new ProductListAdapter(productList);
-        mRecyclerView.setAdapter(listAdapter);
+        ProductListViewModel productListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
+        productListViewModel.getLiveData().observe(this, new Observer<List<ProductList.Product>>() {
+            @Override
+            public void onChanged(@Nullable List<ProductList.Product> productLists) {
+                if (productLists != null) {
+                    ProductListAdapter productListAdapter = new ProductListAdapter(productLists);
+                    mRecyclerView.setAdapter(productListAdapter);
+                }
+            }
+        });
     }
 }
