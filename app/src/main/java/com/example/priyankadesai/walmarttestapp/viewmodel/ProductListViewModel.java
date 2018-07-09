@@ -25,5 +25,4 @@ public class ProductListViewModel extends ViewModel {
         }
         return mMutableLiveData;
     }
-
 }
