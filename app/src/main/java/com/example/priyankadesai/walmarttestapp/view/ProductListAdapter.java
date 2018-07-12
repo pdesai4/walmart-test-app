@@ -1,7 +1,9 @@
 package com.example.priyankadesai.walmarttestapp.view;
 
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +15,26 @@ import com.bumptech.glide.Glide;
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
 
-import java.util.List;
-
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> {
+public class ProductListAdapter extends PagedListAdapter<ProductList.Product, ProductListAdapter.ViewHolder> {
 
     private final static String IMG_URL = "https://mobile-tha-server.appspot.com";
-    private List<ProductList.Product> mDataset;
+    private static final DiffUtil.ItemCallback<ProductList.Product> DIFF_CALLBACK = new DiffUtil.ItemCallback<ProductList.Product>() {
 
-    ProductListAdapter(List<ProductList.Product> dataset) {
-        mDataset = dataset;
+        @Override
+        public boolean areItemsTheSame(ProductList.Product oldItem, ProductList.Product newItem) {
+            // Compare products by id
+            return oldItem.getProductId().equals(newItem.getProductId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(ProductList.Product oldItem, ProductList.Product newItem) {
+            // Compare all product fields
+            return oldItem.equals(newItem);
+        }
+    };
+
+    ProductListAdapter() {
+        super(DIFF_CALLBACK);
     }
 
     @NonNull
@@ -35,12 +48,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ProductListAdapter.ViewHolder holder, int position) {
-        holder.bind(mDataset.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
+        ProductList.Product product = getItem(position);
+        if (product != null) {
+            holder.bind(product);
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

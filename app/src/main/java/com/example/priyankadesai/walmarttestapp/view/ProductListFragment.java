@@ -2,6 +2,7 @@ package com.example.priyankadesai.walmarttestapp.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +17,10 @@ import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
 import com.example.priyankadesai.walmarttestapp.viewmodel.ProductListViewModel;
 
-import java.util.List;
-
 public class ProductListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
+    private ProductListViewModel mProductListViewModel;
 
     /**
      * In order to avoid parameterized constructor, this method is called to get instance of
@@ -46,16 +46,17 @@ public class ProductListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView = view.findViewById(R.id.product_list_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
 
-        ProductListViewModel productListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
-        productListViewModel.getLiveData().observe(this, new Observer<List<ProductList.Product>>() {
+        mProductListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
+        final ProductListAdapter productListAdapter = new ProductListAdapter();
+
+        mProductListViewModel.getLiveData().observe(this, new Observer<PagedList<ProductList.Product>>() {
             @Override
-            public void onChanged(@Nullable List<ProductList.Product> productLists) {
-                if (productLists != null) {
-                    ProductListAdapter productListAdapter = new ProductListAdapter(productLists);
-                    mRecyclerView.setAdapter(productListAdapter);
-                }
+            public void onChanged(@Nullable PagedList<ProductList.Product> products) {
+                productListAdapter.submitList(products);
             }
         });
+        mRecyclerView.setAdapter(productListAdapter);
     }
 }

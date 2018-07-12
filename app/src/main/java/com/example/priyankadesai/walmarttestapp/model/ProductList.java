@@ -1,6 +1,7 @@
 package com.example.priyankadesai.walmarttestapp.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProductList {
     private List<Product> products;
@@ -70,6 +71,28 @@ public class ProductList {
         float reviewRating;
         int reviewCount;
         boolean inStock;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Product product = (Product) o;
+            return Float.compare(product.reviewRating, reviewRating) == 0 &&
+                    reviewCount == product.reviewCount &&
+                    inStock == product.inStock &&
+                    Objects.equals(productId, product.productId) &&
+                    Objects.equals(productImage, product.productImage) &&
+                    Objects.equals(price, product.price) &&
+                    Objects.equals(productName, product.productName) &&
+                    Objects.equals(shortDescription, product.shortDescription) &&
+                    Objects.equals(longDescription, product.longDescription);
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(productId, productImage, price, productName, shortDescription, longDescription, reviewRating, reviewCount, inStock);
+        }
 
         @Override
         public String toString() {
