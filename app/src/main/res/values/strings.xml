@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WalmartTestApp</string>
+    <string name="title">Product Name</string>
+    <string name="product_image">Product Image</string>
+    <string name="product_review_count">Product Review Count</string>
+    <string name="product_rating">Product Rating</string>
+    <string name="product_price">Product Price</string>
+    <string name="product_description">Product Description</string>
 </resources>

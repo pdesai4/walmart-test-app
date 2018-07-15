@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
+import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel;
 import com.example.priyankadesai.walmarttestapp.viewmodel.ProductListViewModel;
 
 public class ProductListFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
     private ProductListViewModel mProductListViewModel;
+    private MainActivityViewModel mMainActivityViewModel;
 
     /**
      * In order to avoid parameterized constructor, this method is called to get instance of
@@ -44,12 +45,22 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = view.findViewById(R.id.product_list_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = view.findViewById(R.id.product_list_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        if (getActivity() != null) {
+            mProductListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
+            mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
+        }
 
-        mProductListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
-        final ProductListAdapter productListAdapter = new ProductListAdapter();
+        final ProductListAdapter productListAdapter = new ProductListAdapter(new ProductClickListener() {
+            @Override
+            public void onProductClicked(int position, PagedList<ProductList.Product> product) {
+                MainActivityViewModel.ProductObject productObject =
+                        new MainActivityViewModel.ProductObject(position, product);
+                mMainActivityViewModel.getLiveData().setValue(productObject);
+            }
+        });
 
         mProductListViewModel.getLiveData().observe(this, new Observer<PagedList<ProductList.Product>>() {
             @Override
@@ -57,6 +68,7 @@ public class ProductListFragment extends Fragment {
                 productListAdapter.submitList(products);
             }
         });
-        mRecyclerView.setAdapter(productListAdapter);
+
+        recyclerView.setAdapter(productListAdapter);
     }
 }

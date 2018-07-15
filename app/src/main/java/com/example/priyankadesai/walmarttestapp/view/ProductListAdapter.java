@@ -32,9 +32,11 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
             return oldItem.equals(newItem);
         }
     };
+    private ProductClickListener mProductClickListener;
 
-    ProductListAdapter() {
+    ProductListAdapter(ProductClickListener productClickListener) {
         super(DIFF_CALLBACK);
+        mProductClickListener = productClickListener;
     }
 
     @NonNull
@@ -42,25 +44,31 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
     public ProductListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.list_product, parent, false);
+        final View view = layoutInflater.inflate(R.layout.list_product, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductListAdapter.ViewHolder holder, int position) {
-        ProductList.Product product = getItem(position);
+    public void onBindViewHolder(@NonNull final ProductListAdapter.ViewHolder holder, int position) {
+        final ProductList.Product product = getItem(position);
         if (product != null) {
             holder.bind(product);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mProductClickListener.onProductClicked(holder.getAdapterPosition(), getCurrentList());
+                }
+            });
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView productImage;
         private final TextView productName;
         private final TextView productRating;
         private final TextView productPrice;
 
-        ViewHolder(View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
@@ -73,7 +81,7 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
                     .load(IMG_URL + product.getProductImage())
                     .into(productImage);
             productName.setText(product.getProductName());
-            productRating.setText(String.format("%s", product.getReviewRating()));
+            productRating.setText(String.valueOf(product.getReviewRating()));
             productPrice.setText(product.getPrice());
         }
     }

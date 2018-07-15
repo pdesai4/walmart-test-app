@@ -1,5 +1,8 @@
 package com.example.priyankadesai.walmarttestapp.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +12,13 @@ public class ProductList {
     private int pageNumber;
     private int pageSize;
     private int statusCode;
+
+    protected ProductList(Parcel in) {
+        totalProducts = in.readInt();
+        pageNumber = in.readInt();
+        pageSize = in.readInt();
+        statusCode = in.readInt();
+    }
 
     @Override
     public String toString() {
@@ -61,7 +71,18 @@ public class ProductList {
         this.statusCode = statusCode;
     }
 
-    public static class Product {
+    public static class Product implements Parcelable {
+        public static final Creator<Product> CREATOR = new Creator<Product>() {
+            @Override
+            public Product createFromParcel(Parcel in) {
+                return new Product(in);
+            }
+
+            @Override
+            public Product[] newArray(int size) {
+                return new Product[size];
+            }
+        };
         String productId;
         String productImage;
         String price;
@@ -71,6 +92,18 @@ public class ProductList {
         float reviewRating;
         int reviewCount;
         boolean inStock;
+
+        protected Product(Parcel in) {
+            productId = in.readString();
+            productImage = in.readString();
+            price = in.readString();
+            productName = in.readString();
+            shortDescription = in.readString();
+            longDescription = in.readString();
+            reviewRating = in.readFloat();
+            reviewCount = in.readInt();
+            inStock = in.readByte() != 0;
+        }
 
         @Override
         public boolean equals(Object o) {
@@ -179,6 +212,24 @@ public class ProductList {
 
         public void setInStock(boolean inStock) {
             this.inStock = inStock;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(productId);
+            dest.writeString(productImage);
+            dest.writeString(price);
+            dest.writeString(productName);
+            dest.writeString(shortDescription);
+            dest.writeString(longDescription);
+            dest.writeFloat(reviewRating);
+            dest.writeInt(reviewCount);
+            dest.writeByte((byte) (inStock ? 1 : 0));
         }
     }
 }
