@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
 import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel;
+import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel.CurrentFragment;
 import com.example.priyankadesai.walmarttestapp.viewmodel.ProductListViewModel;
 
 public class ProductListFragment extends Fragment {
@@ -36,6 +37,12 @@ public class ProductListFragment extends Fragment {
         return productListFragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMainActivityViewModel.getCurrentFragmentLiveData().setValue(CurrentFragment.FRAGMENT_PRODUCT_LIST);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,6 +55,7 @@ public class ProductListFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.product_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
+
         if (getActivity() != null) {
             mProductListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
             mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
@@ -59,6 +67,7 @@ public class ProductListFragment extends Fragment {
                 MainActivityViewModel.ProductObject productObject =
                         new MainActivityViewModel.ProductObject(position, product);
                 mMainActivityViewModel.getLiveData().setValue(productObject);
+                mMainActivityViewModel.getCurrentFragmentLiveData().setValue(CurrentFragment.FRAGMENT_PRODUCT_DESC);
             }
         });
 

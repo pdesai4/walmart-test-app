@@ -9,14 +9,26 @@ import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<ProductObject> mMutableLiveData;
+    private MutableLiveData<ProductObject> mProductObjectLiveData;
+    private MutableLiveData<CurrentFragment> mCurrentFragmentLiveData;
 
     public MainActivityViewModel() {
-        mMutableLiveData = new MutableLiveData<>();
+        mProductObjectLiveData = new MutableLiveData<>();
+        mCurrentFragmentLiveData = new MutableLiveData<>();
+        mCurrentFragmentLiveData.setValue(CurrentFragment.FRAGMENT_PRODUCT_LIST);
     }
 
     public MutableLiveData<ProductObject> getLiveData() {
-        return mMutableLiveData;
+        return mProductObjectLiveData;
+    }
+
+    public MutableLiveData<CurrentFragment> getCurrentFragmentLiveData() {
+        return mCurrentFragmentLiveData;
+    }
+
+    public enum CurrentFragment {
+        FRAGMENT_PRODUCT_LIST,
+        FRAGMENT_PRODUCT_DESC
     }
 
     public static class ProductObject {

@@ -1,5 +1,6 @@
 package com.example.priyankadesai.walmarttestapp.view;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
+import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel;
+import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel.CurrentFragment;
 
 public class ProductDescriptionFragment extends Fragment {
     public static final String ARG_OBJECT = "Product";
@@ -29,10 +32,9 @@ public class ProductDescriptionFragment extends Fragment {
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.description_product, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
             ProductList.Product product = (ProductList.Product) args.get(ARG_OBJECT);
@@ -41,7 +43,12 @@ public class ProductDescriptionFragment extends Fragment {
                 productDisplay.bind(product);
             }
         }
-        return view;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.description_product, container, false);
     }
 
     class ProductDisplay {

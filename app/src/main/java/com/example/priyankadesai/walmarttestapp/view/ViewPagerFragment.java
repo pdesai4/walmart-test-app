@@ -13,25 +13,33 @@ import android.view.ViewGroup;
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel;
 
-import java.util.Objects;
-
 public class ViewPagerFragment extends Fragment {
+
+    private MainActivityViewModel mMainActivityViewModel;
 
     public static ViewPagerFragment newInstance() {
         return new ViewPagerFragment();
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mMainActivityViewModel.getCurrentFragmentLiveData().setValue(MainActivityViewModel.CurrentFragment.FRAGMENT_PRODUCT_DESC);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivityViewModel mainActivityViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(MainActivityViewModel.class);
-        MainActivityViewModel.ProductObject productObject = mainActivityViewModel.getLiveData().getValue();
-        ViewPager viewPager = getActivity().findViewById(R.id.pager);
-        if (productObject != null) {
-            ProductDescriptionPagerAdapter productDescriptionPagerAdapter =
-                    new ProductDescriptionPagerAdapter(getFragmentManager(), productObject.getProducts());
-            viewPager.setAdapter(productDescriptionPagerAdapter);
-            viewPager.setCurrentItem(productObject.getPosition());
+        if (getActivity() != null) {
+            mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
+            MainActivityViewModel.ProductObject productObject = mMainActivityViewModel.getLiveData().getValue();
+            ViewPager viewPager = view.findViewById(R.id.pager);
+            if (productObject != null) {
+                ProductDescriptionPagerAdapter productDescriptionPagerAdapter =
+                        new ProductDescriptionPagerAdapter(getFragmentManager(), productObject.getProducts());
+                viewPager.setAdapter(productDescriptionPagerAdapter);
+                viewPager.setCurrentItem(productObject.getPosition());
+            }
         }
     }
 
