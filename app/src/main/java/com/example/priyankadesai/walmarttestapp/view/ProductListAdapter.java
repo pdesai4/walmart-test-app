@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -65,7 +66,8 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView productImage;
         private final TextView productName;
-        private final TextView productRating;
+        private final RatingBar productRating;
+        private final TextView productReviewCount;
         private final TextView productPrice;
 
         ViewHolder(final View itemView) {
@@ -73,6 +75,7 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
             productRating = itemView.findViewById(R.id.product_rating);
+            productReviewCount = itemView.findViewById(R.id.product_review_count);
             productPrice = itemView.findViewById(R.id.product_price);
         }
 
@@ -81,7 +84,8 @@ public class ProductListAdapter extends PagedListAdapter<ProductList.Product, Pr
                     .load(IMG_URL + product.getProductImage())
                     .into(productImage);
             productName.setText(product.getProductName());
-            productRating.setText(String.valueOf(product.getReviewRating()));
+            productRating.setRating(product.getReviewRating());
+            productReviewCount.setText(String.valueOf(product.getReviewCount()));
             productPrice.setText(product.getPrice());
         }
     }

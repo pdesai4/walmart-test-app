@@ -1,13 +1,16 @@
 package com.example.priyankadesai.walmarttestapp.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +46,7 @@ public class ProductDescriptionFragment extends Fragment {
 
     class ProductDisplay {
         private final TextView productName;
-        private final TextView productRating;
+        private final RatingBar productRating;
         private final TextView productReviewCount;
         private final ImageView productImage;
         private final TextView productPrice;
@@ -63,10 +66,16 @@ public class ProductDescriptionFragment extends Fragment {
                     .load(IMG_URL + product.getProductImage())
                     .into(productImage);
             productName.setText(product.getProductName());
-            productRating.setText(String.valueOf(product.getReviewRating()));
-            productReviewCount.setText(String.valueOf(product.getReviewCount()));
+            productRating.setRating(product.getReviewRating());
+            productReviewCount.setText(String.valueOf(product.getReviewCount() + " reviews"));
             productPrice.setText(product.getPrice());
-            productDescription.setText(product.getLongDescription());
+            if (product.getLongDescription() != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    productDescription.setText(Html.fromHtml(product.getLongDescription(), Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    productDescription.setText(Html.fromHtml(product.getLongDescription()));
+                }
+            }
         }
     }
 }
