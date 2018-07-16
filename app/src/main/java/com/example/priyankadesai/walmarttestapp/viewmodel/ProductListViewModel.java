@@ -11,20 +11,10 @@ import com.example.priyankadesai.walmarttestapp.network.RemoteDataSource;
 
 public class ProductListViewModel extends ViewModel {
 
-    private RemoteDataSource mRemoteDataSource;
+    private final LiveData<PagedList<ProductList.Product>> pagedListLiveData;
 
     ProductListViewModel() {
-        mRemoteDataSource = new RemoteDataSource();
-    }
-
-    /**
-     * This function is responsible for creating the {@link PagedList} and give to the
-     * {@link com.example.priyankadesai.walmarttestapp.view.ProductListFragment} so
-     * it can observe the data changes and pass it to the adapter
-     *
-     * @return {@link PagedList} to be observed
-     */
-    public LiveData<PagedList<ProductList.Product>> getLiveData() {
+        RemoteDataSource remoteDataSource = new RemoteDataSource();
         // Set page configs
         PagedList.Config config = new PagedList.Config.Builder()
                 .setPageSize(30)
@@ -32,8 +22,11 @@ public class ProductListViewModel extends ViewModel {
                 .setInitialLoadSizeHint(30)
                 .setPrefetchDistance(5)
                 .build();
+        ProductDataSourceFactory productDataSourceFactory = new ProductDataSourceFactory(remoteDataSource);
+        pagedListLiveData = new LivePagedListBuilder<>(productDataSourceFactory, config).build();
+    }
 
-        ProductDataSourceFactory productDataSourceFactory = new ProductDataSourceFactory(mRemoteDataSource);
-        return new LivePagedListBuilder<>(productDataSourceFactory, config).build();
+    public LiveData<PagedList<ProductList.Product>> getLiveData() {
+        return pagedListLiveData;
     }
 }

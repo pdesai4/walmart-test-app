@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         if (productObject != null && getSupportFragmentManager().findFragmentByTag(TAG_PRODUCT_DESC) == null) {
             ViewPagerFragment viewPagerFragment = ViewPagerFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
+                            R.anim.slide_in_from_left, R.anim.slide_out_to_right)
                     .replace(R.id.container, viewPagerFragment, TAG_PRODUCT_DESC)
                     .addToBackStack(null)
                     .commit();

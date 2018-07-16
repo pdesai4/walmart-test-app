@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WalmartTestApp</string>
+    <string name="app_name">Walmart Test App</string>
     <string name="product_name">Product Name</string>
     <string name="product_image">Product Image</string>
     <string name="product_review_count">Product Review Count</string>

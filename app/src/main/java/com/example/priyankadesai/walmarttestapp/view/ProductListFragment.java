@@ -57,7 +57,7 @@ public class ProductListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         if (getActivity() != null) {
-            mProductListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
+            mProductListViewModel = ViewModelProviders.of(getActivity()).get(ProductListViewModel.class);
             mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
         }
 
@@ -77,7 +77,6 @@ public class ProductListFragment extends Fragment {
                 productListAdapter.submitList(products);
             }
         });
-
         recyclerView.setAdapter(productListAdapter);
     }
 }
