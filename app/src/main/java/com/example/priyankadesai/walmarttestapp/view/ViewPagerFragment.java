@@ -32,7 +32,7 @@ public class ViewPagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (getActivity() != null) {
             mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
-            MainActivityViewModel.ProductObject productObject = mMainActivityViewModel.getLiveData().getValue();
+            MainActivityViewModel.ProductObject productObject = mMainActivityViewModel.getProductObjectLiveData().getValue();
             ViewPager viewPager = view.findViewById(R.id.pager);
             if (productObject != null) {
                 ProductDescriptionPagerAdapter productDescriptionPagerAdapter =

@@ -1,6 +1,5 @@
 package com.example.priyankadesai.walmarttestapp.view;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,13 +16,18 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.priyankadesai.walmarttestapp.R;
 import com.example.priyankadesai.walmarttestapp.model.ProductList;
-import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel;
-import com.example.priyankadesai.walmarttestapp.viewmodel.MainActivityViewModel.CurrentFragment;
 
 public class ProductDescriptionFragment extends Fragment {
-    public static final String ARG_OBJECT = "Product";
+    public static final String ARG_OBJECT = "ARG_OBJECT";
     private static final String IMG_URL = "https://mobile-tha-server.appspot.com";
 
+    /**
+     * In order to avoid parameterized constructor, this method is called to get instance of
+     * {@link ProductDescriptionFragment}
+     *
+     * @param product {@link ProductList.Product}
+     * @return nstance of {@link ProductDescriptionFragment}
+     */
     public static ProductDescriptionFragment newInstance(ProductList.Product product) {
         ProductDescriptionFragment fragment = new ProductDescriptionFragment();
         Bundle args = new Bundle();
@@ -76,6 +80,7 @@ public class ProductDescriptionFragment extends Fragment {
             productRating.setRating(product.getReviewRating());
             productReviewCount.setText(String.valueOf(product.getReviewCount() + " reviews"));
             productPrice.setText(product.getPrice());
+            // Remove Html tags from text
             if (product.getLongDescription() != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     productDescription.setText(Html.fromHtml(product.getLongDescription(), Html.FROM_HTML_MODE_LEGACY));

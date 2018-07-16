@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                             loadProductListFragment();
                             break;
                         case FRAGMENT_PRODUCT_DESC:
-                            loadProductDescFragment(mainActivityViewModel.getLiveData().getValue());
+                            loadProductDescFragment(mainActivityViewModel.getProductObjectLiveData().getValue());
                             break;
                     }
                 }
@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Loads the {@link ProductListFragment}
+     */
     private void loadProductListFragment() {
         if (getSupportFragmentManager().findFragmentByTag(TAG_PRODUCT_LIST_FRAGMENT) == null) {
             ProductListFragment productListFragment = ProductListFragment.newInstance();
@@ -52,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loads the {@link ProductDescriptionFragment}
+     *
+     * @param productObject {@link MainActivityViewModel.ProductObject}
+     */
     private void loadProductDescFragment(MainActivityViewModel.ProductObject productObject) {
         if (productObject != null && getSupportFragmentManager().findFragmentByTag(TAG_PRODUCT_DESC) == null) {
             ViewPagerFragment viewPagerFragment = ViewPagerFragment.newInstance();

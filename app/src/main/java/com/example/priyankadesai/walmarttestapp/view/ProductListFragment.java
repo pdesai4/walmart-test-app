@@ -67,7 +67,7 @@ public class ProductListFragment extends Fragment {
             public void onProductClicked(int position, PagedList<ProductList.Product> product) {
                 MainActivityViewModel.ProductObject productObject =
                         new MainActivityViewModel.ProductObject(position, product);
-                mMainActivityViewModel.getLiveData().setValue(productObject);
+                mMainActivityViewModel.getProductObjectLiveData().setValue(productObject);
                 mMainActivityViewModel.getCurrentFragmentLiveData().setValue(CurrentFragment.FRAGMENT_PRODUCT_DESC);
             }
         });

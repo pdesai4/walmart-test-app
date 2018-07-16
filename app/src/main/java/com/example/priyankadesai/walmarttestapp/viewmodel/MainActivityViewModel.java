@@ -18,7 +18,7 @@ public class MainActivityViewModel extends ViewModel {
         mCurrentFragmentLiveData.setValue(CurrentFragment.FRAGMENT_PRODUCT_LIST);
     }
 
-    public MutableLiveData<ProductObject> getLiveData() {
+    public MutableLiveData<ProductObject> getProductObjectLiveData() {
         return mProductObjectLiveData;
     }
 
