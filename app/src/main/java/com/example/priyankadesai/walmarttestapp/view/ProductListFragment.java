@@ -26,7 +26,7 @@ public class ProductListFragment extends Fragment {
 
     /**
      * In order to avoid parameterized constructor, this method is called to get instance of
-     * ProductListFragment class
+     * {@link ProductListFragment} class
      *
      * @return instance of {@link ProductListFragment}
      */
@@ -52,6 +52,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         RecyclerView recyclerView = view.findViewById(R.id.product_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);

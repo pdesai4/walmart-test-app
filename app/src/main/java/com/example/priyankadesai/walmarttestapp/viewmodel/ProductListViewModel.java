@@ -13,7 +13,7 @@ public class ProductListViewModel extends ViewModel {
 
     private final LiveData<PagedList<ProductList.Product>> pagedListLiveData;
 
-    ProductListViewModel() {
+    public ProductListViewModel() {
         RemoteDataSource remoteDataSource = new RemoteDataSource();
         // Set page configs
         PagedList.Config config = new PagedList.Config.Builder()
