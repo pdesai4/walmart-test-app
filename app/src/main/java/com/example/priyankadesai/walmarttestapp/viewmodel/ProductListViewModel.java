@@ -19,8 +19,8 @@ public class ProductListViewModel extends ViewModel {
         PagedList.Config config = new PagedList.Config.Builder()
                 .setPageSize(30)
                 .setEnablePlaceholders(false)
-                .setInitialLoadSizeHint(30)
-                .setPrefetchDistance(5)
+                .setInitialLoadSizeHint(12)
+                .setPrefetchDistance(12)
                 .build();
         ProductDataSourceFactory productDataSourceFactory = new ProductDataSourceFactory(remoteDataSource);
         pagedListLiveData = new LivePagedListBuilder<>(productDataSourceFactory, config).build();
